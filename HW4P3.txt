@@ -1,0 +1,50 @@
+# Revision 1 BEGIN/ START DATE: 15-Feb-2024
+## Begin Bao Phan
+
+import random
+import string
+
+# Load dictionary words from a file
+def load_dictionary(file_path):
+    with open(file_path, 'r') as file:
+        return {line.strip().lower() for line in file}
+
+dictionary_words = load_dictionary('dictionary.txt')
+
+# Define special characters
+special_chars = string.punctuation
+
+# Function to create a random password
+def create_random_password(length=12):
+    chars = string.ascii_letters + string.digits + special_chars
+    return ''.join(random.choice(chars) for _ in range(length))
+
+# Function to check if the password is acceptable
+def is_acceptable(password):
+    return any(char in special_chars for char in password) and password.lower() not in dictionary_words
+
+# Function to archive, and track unaccepted passwords
+def password_simulator(iterations=40):
+    archived_passwords = []
+    unaccepted_passwords = []  # Track unaccepted passwords
+    for _ in range(iterations):
+        password = create_random_password()
+        if is_acceptable(password):
+            archived_passwords.append(password)
+        else:
+            unaccepted_passwords.append(password)
+    return archived_passwords, unaccepted_passwords
+
+archived, unaccepted = password_simulator()
+
+# Print out the archived and unaccepted passwords
+print("Archived Passwords:")
+for password in archived:
+    print(password)
+print("\nUnaccepted Passwords:")
+for password in unaccepted:
+    print(password)
+
+# Revision 1 FINAL DATE: 15-Feb-2024
+## End Bao Phan
+

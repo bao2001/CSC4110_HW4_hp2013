@@ -1,0 +1,68 @@
+# Revision 1 BEGIN/ START DATE: 15-Feb-2024
+## Begin Bao Phan
+
+import random
+
+# Create treasure and trash
+class TreasureChest:
+    def __init__(self, items):
+        self.items = items
+    
+    def populate_chest(self, num_items):
+        for _ in range(num_items):
+            self.items.append(f"Treasure{random.randint(1, 100)}" if random.choice([True, False]) else "Leather Boots")
+
+    def grab_item(self):
+        if self.items:
+            return self.items.pop()
+        return "Empty Chest!"
+
+class PirateBank:
+    def __init__(self, balance):
+        self.balance = balance
+
+    def wager(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            return True
+        return False
+
+    def add_loot(self, amount):
+        self.balance += amount
+
+# Create simulation
+def pirate_game_simulation():
+    print("Arrrrgh matey! Welcome to the Pirate Game of Chance!")
+    
+    chest = TreasureChest([])
+    chest.populate_chest(20)  # 20 valuable and worthless items
+    
+    bank = PirateBank(100)  # Starting with a balance of 100
+    
+    while bank.balance > 0:
+        print(f"\nYour current balance is: {bank.balance}")
+        wager_amount = int(input("How much do you want to wager? "))
+        
+        if bank.wager(wager_amount):
+            grabbed_item = chest.grab_item()
+            if "Treasure" in grabbed_item:
+                winnings = random.randint(-wager_amount, 10 * wager_amount)
+                bank.add_loot(winnings)
+                print(f"Ye grabbed a {grabbed_item} worth {winnings} coins!")
+            else:
+                print(f"Ye grabbed {grabbed_item}! No coins for you!")
+        else:
+            print("Ye don't have enough coins for that wager!")
+            
+        if input("Play again? (yes/no) ").strip().lower() != 'yes':
+            break
+            
+    print("Ye have no more coins to wager! Game over.")
+    return bank.balance
+
+# Start the game
+final_balance = pirate_game_simulation()
+print(f"\nYe finished with a balance of {final_balance}")
+
+# Revision 1 FINAL DATE: 15-Feb-2024
+## End Bao Phan

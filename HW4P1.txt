@@ -1,0 +1,62 @@
+# Revision 1 BEGIN/START DATE: 15-Feb-2024
+## Begin Bao Phan
+
+import random
+import datetime
+import json
+
+# Define the data collector method
+def data_collector(num_records):
+    users_data = {}
+    
+    for _ in range(num_records):
+        user_id = f'ID-{random.randint(1000, 9999)}'
+        users_data[user_id] = {
+            'username': f'user{random.randint(100, 999)}',
+            'password': f'pass{random.randint(1000, 9999)}',
+            'birthdate': str(datetime.date(random.randint(1950, 2010), 
+                                           random.randint(1, 12), 
+                                           random.randint(1, 28))),
+            'address': f'{random.randint(100, 999)} Main St, City{random.randint(1, 100)}',
+            'social_security_number': f'{random.randint(100, 999)}-{random.randint(10, 99)}-{random.randint(1000, 9999)}',
+            'productPurchased': f'ID-{random.randint(10000, 99999)}',
+            'salesperson': f'sales{random.randint(1, 20)}'
+        }
+    return users_data
+
+# Define the search functions
+def search_by_city(users_data, city):
+    city_key = f'City{city}'
+    return {user_id: data for user_id, data in users_data.items() if city_key in data['address']}
+
+def search_by_salesperson(users_data, salesperson):
+    return {user_id: data for user_id, data in users_data.items() if data['salesperson'] == salesperson}
+
+# Search prompt
+def search_prompt(users_data):
+    search = input("Do you want to perform a search? (yes/no) ").strip().lower()
+    if search == 'yes':
+        search_type = input("What do you want to search by? (city/salesperson) ").strip().lower()
+        if search_type == 'city':
+            city = input("Enter the city number (e.g., '10' for 'City10'): ")
+            results = search_by_city(users_data, city)
+        elif search_type == 'salesperson':
+            salesperson = input("Enter the salesperson name (e.g., 'sales1'): ")
+            results = search_by_salesperson(users_data, salesperson)
+        else:
+            print("Search type not recognized.")
+            return None
+        return results
+    else:
+        print("No search performed.")
+        return None
+
+# Generate sample data
+sample_data = data_collector(100)
+
+search_results = search_prompt(sample_data)
+if search_results is not None:
+    print(json.dumps(search_results, indent=2))
+
+# Revision 1 FINAL DATE: 15-Feb-2024
+## End Bao Phan
